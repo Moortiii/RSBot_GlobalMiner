@@ -17,8 +17,8 @@ import java.util.TimerTask;
 @Script.Manifest(name="GlobalMiner", description="Locate nearby ore to power mine anywhere", properties="client=4")
 public class GlobalMiner extends PollingScript<ClientContext> implements PaintListener, MouseListener
 {
-    private ArrayList<Task> taskList = new ArrayList<>();
     private static final Rectangle TOGGLE_GUI = new Rectangle(10, 160, 105, 20);
+    private ArrayList<Task> taskList = new ArrayList<>();
     private int EXP_START;
     private int EXP_CURRENT;
     private int EXP_HOUR;
@@ -27,6 +27,7 @@ public class GlobalMiner extends PollingScript<ClientContext> implements PaintLi
 
     @Override
     public void poll() {
+        // Pause the script while the user is choosing new settings
         if(ui.isVisible()) {
             return;
         }
@@ -91,9 +92,9 @@ public class GlobalMiner extends PollingScript<ClientContext> implements PaintLi
             g.drawString(string, x, y);
         }
 
+        // Toggle box for user interface
         g.setColor(new Color(255, 227, 8, 215));
         g.fillRect(x,y + 10, 105, 20);
-
         g.setColor(new Color(0, 0, 0));
         g.drawString("Click to open GUI", x + 5, y + 25);
     }
@@ -146,7 +147,6 @@ public class GlobalMiner extends PollingScript<ClientContext> implements PaintLi
     @Override
     public void mouseReleased(MouseEvent e) {
         if(TOGGLE_GUI.contains(e.getPoint())) {
-            System.out.println("Toggled!");
             ui.displayInterface();
         }
     }

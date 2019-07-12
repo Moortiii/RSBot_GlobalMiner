@@ -4,9 +4,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum Rock {
-    IRON (440, "Iron ore", 11365, 11364),
-    COAL (443, "Coal ore", 11366, 11367),
-    ADAMANTITE (500, "Adamantite ore", 11374, 11375);
+    // Padding the displayName with spaces because Swing sucks and I want padding without resorting
+    // to using a CompoundBorder with an EmptyBorder and LineBorder that sucks even more.
+    // TODO: Update with additional ore values. Need to find a resource that has all the rockIds
+    IRON (440, "  Iron ore", 11365, 11364),
+    COAL (443, "  Coal ore", 11366, 11367),
+    ADAMANTITE (449, "  Adamantite ore", 11374, 11375);
 
     public int[] rockIds;
     public int oreId;

@@ -16,12 +16,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class UserInterface extends JFrame {
-    // Constants
     private final int WIDTH = 300;
     private ClientContext ctx;
     private Rock selected_rock;
-
-    // Create a pane to store our other panes in. This avoids the .getContentPane() everywhere
     private JPanel container = new JPanel();
     private JPanel button_panel = new JPanel();
     private JPanel list_panel = new JPanel();
@@ -33,10 +30,9 @@ public class UserInterface extends JFrame {
     public UserInterface(ClientContext ctx) {
         this.ctx = ctx;
 
-        //this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        this.setIconImage(null);
+        // TODO: Find out if there is a way to get the original JFrame for the client as
+        // this would make it possible to start the GUI relative to it, nice QOL change.
         this.setTitle("GlobalMiner");
-        this.setDefaultCloseOperation(0);
         this.setPreferredSize(new Dimension(WIDTH, 300));
         this.setLocationRelativeTo(null);
         this.setLayout(new BorderLayout(5, 10));
@@ -67,6 +63,7 @@ public class UserInterface extends JFrame {
             }
         });
 
+        // Check for nearby ores immediately after the script is launched
         populateInterface();
 
         this.add(this.container);
@@ -93,8 +90,9 @@ public class UserInterface extends JFrame {
         this.refresh_button.setContentAreaFilled(true);
         this.refresh_button.setForeground(Color.WHITE);
         this.refresh_button.setPreferredSize(new Dimension(100, 35));
-        this.button_panel.add(this.refresh_button);this.start_button = new JButton("Start script");
+        this.button_panel.add(this.refresh_button);
 
+        this.start_button = new JButton("Start script");
         this.start_button.setBorderPainted(false);
         this.start_button.setFocusPainted(false);
         this.start_button.setBackground(new Color(39, 174, 96));
@@ -105,6 +103,8 @@ public class UserInterface extends JFrame {
     }
 
     void populateInterface() {
+        // Likely the wrong datastructures to use, but this makes it
+        // so easy to avoid duplicates that it's probably worth it
         Set<GameObject> nearbyObjects = new HashSet<>();
         Set<GameObject> nearbyOres = new HashSet<>();
         Set<String> objectStrings = new HashSet<>();
@@ -112,6 +112,8 @@ public class UserInterface extends JFrame {
         ctx.objects.within(3).select().addTo(nearbyObjects);
 
         // Cubic time because processing power is cheap
+        // probably should fine a better way to do this
+        // but the operation happens so rarely anyway
         for(GameObject object : nearbyObjects) {
             for(Rock rock : Rock.values()) {
                 for(int id : rock.rockIds) {
